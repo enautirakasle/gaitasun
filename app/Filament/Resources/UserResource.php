@@ -35,6 +35,10 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\CheckboxList::make('roles')
+    ->relationship('roles', 'name')
+    ->columns(2)
+    ->required()
             ]);
     }
 
@@ -49,13 +53,13 @@ class UserResource extends Resource
                 // Tables\Columns\TextColumn::make('email_verified_at')
                 //     ->dateTime()
                 //     ->sortable(),
-               
+
                 Tables\Columns\TextColumn::make('roles.name')
                     ->label('Roles')
                     ->badge()
                     ->separator(', ')
                     ->sortable(),
-                
+
             ])
             ->filters([
                 //
