@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateCompetenciaTransversal extends CreateRecord
 {
     protected static string $resource = CompetenciaTransversalResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
