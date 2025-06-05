@@ -62,7 +62,7 @@ class CompetenciaTransversalResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\IndicadorsRelationManager::class,
         ];
     }
 

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('competencia_transversals', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre')->nullable();
+            $table->string('descripcion')->nullable();
+            $table->enum('nivel', ['Lehen hezkuntza', 'Bigarren hezkuntza', 'Lanbide heziketa'])->nullable();
             $table->timestamps();
         });
     }

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('indicadors', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre')->nullable();
+            $table->string('valor')->nullable()->comment('Valor del indicador, puede ser un número, indicará si ese  indicador suma paraa conseguir esa competencia o resta, etc.');
+            $table->foreignId('competencia_transversal_id')->constrained('competencia_transversals')->onDelete('cascade');
             $table->timestamps();
         });
     }
