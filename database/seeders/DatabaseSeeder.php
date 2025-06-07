@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Curso;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,8 +25,9 @@ class DatabaseSeeder extends Seeder
             RolesSeeder::class,
             CompetenciaTransversalSeeder::class,
             IndicadorSeeder::class,
+            CursoSeeder::class,
+            GrupoSeeder::class,
             // PermissionsSeeder::class,
-            // CursosSeeder::class,
             // Add other seeders here as needed
         ]);
     }
