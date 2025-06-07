@@ -17,11 +17,11 @@ class CompetenciaTransversalResource extends Resource
 {
     protected static ?string $model = CompetenciaTransversal::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-light-bulb'; //light-bulb chat-bubble-left-ellipsis
 
     protected static ?string $navigationLabel = 'Competencias Transversales';
     
-    protected static ?string $pluralModelLabel = 'Listado de Competencias  Transversales'; // <-- Cambia esto
+    protected static ?string $pluralModelLabel = 'Listado de Competencias  Transversales';
 
     public static function form(Form $form): Form
     {
