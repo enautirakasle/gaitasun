@@ -11,4 +11,9 @@ class Curso extends Model
         'fecha_inicio',
         'fecha_fin',
     ];
+
+    public function grupos()
+    {
+        return $this->hasMany(Grupo::class);
+    }
 }
