@@ -70,7 +70,7 @@ class CursoResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\GruposRelationManager::class,
         ];
     }
 
