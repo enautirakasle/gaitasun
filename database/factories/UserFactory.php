@@ -5,6 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Models\User;
+use App\Models\Alumno;
+use App\Models\Profesor;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -40,5 +43,25 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+     public function alumno(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            Alumno::create([
+                'user_id' => $user->id,
+            ]);
+            $user->assignRole('alumno');
+        });
+    }
+
+    public function profesor(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            Profesor::create([
+                'user_id' => $user->id,
+            ]);
+            $user->assignRole('profesor');
+        });
     }
 }

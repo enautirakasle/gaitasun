@@ -20,9 +20,9 @@ class RolesSeeder extends Seeder
         $roleAlumno = Role::create(['name' => 'alumno']);
         $roleProfesor = Role::create(['name' => 'profesor']);
 
-        User::where('name', 'admin')->first()->assignRole($roleAdmin);
-        User::where('name', 'alumno')->first()->assignRole($roleAlumno);
-        User::where('name', 'profesor')->first()->assignRole($roleProfesor);
+        // User::where('name', 'admin')->first()->assignRole($roleAdmin);
+        // User::where('name', 'alumno')->first()->assignRole($roleAlumno);
+        // User::where('name', 'profesor')->first()->assignRole($roleProfesor);
 
 
     }
