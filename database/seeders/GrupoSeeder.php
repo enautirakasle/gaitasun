@@ -16,7 +16,7 @@ class GrupoSeeder extends Seeder
     {
         DB::table('grupos')->insert([
             [
-                'nombre' => 'DB1 A',
+                'nombre' => 'DBH1 A',
                 'curso_id' => 1, // Assuming the first course exists
             ],
             [
