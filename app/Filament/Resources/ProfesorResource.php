@@ -16,10 +16,14 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ProfesorResource extends Resource
 {
     protected static ?string $model = Profesor::class;
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationGroup = 'Personal';
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $pluralModelLabel = 'Listado de profesores';
+    
     protected static ?string $navigationLabel = 'Profesores';
 
 
@@ -78,5 +82,10 @@ class ProfesorResource extends Resource
             'create' => Pages\CreateProfesor::route('/create'),
             'edit' => Pages\EditProfesor::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }
