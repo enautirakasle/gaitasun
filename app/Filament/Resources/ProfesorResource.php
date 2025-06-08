@@ -17,7 +17,11 @@ class ProfesorResource extends Resource
 {
     protected static ?string $model = Profesor::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+
+    protected static ?string $pluralModelLabel = 'Listado de profesores';
+    protected static ?string $navigationLabel = 'Profesores';
+
 
     public static function form(Form $form): Form
     {

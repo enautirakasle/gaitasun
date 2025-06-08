@@ -17,7 +17,11 @@ class AlumnoResource extends Resource
 {
     protected static ?string $model = Alumno::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group'; // user-group
+
+    protected static ?string $pluralModelLabel = 'Listado de alumnos';
+    protected static ?string $navigationLabel = 'Alumnos';
+
 
     public static function form(Form $form): Form
     {
