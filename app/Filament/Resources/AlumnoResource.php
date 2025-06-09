@@ -10,6 +10,7 @@ use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -29,47 +30,56 @@ class AlumnoResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group'; // user-group
 
     protected static ?string $pluralModelLabel = 'Listado de alumnos';
-    
+
     protected static ?string $navigationLabel = 'Alumnos';
 
 
     public static function form(Form $form): Form
     {
-      return $form
-        ->schema([
-            Hidden::make('user_id'),
+        return $form
+            ->schema([
+                Hidden::make('user_id'),
 
-            Section::make('Datos del Usuario')
-                ->schema([
-                    Group::make([
-                        TextInput::make('name')
-                            ->label('Nombre')
-                            ->required()
-                            ->maxLength(255),
+                Section::make('Datos del Usuario')
+                    ->schema([
+                        Group::make([
+                            TextInput::make('name')
+                                ->label('Nombre')
+                                ->required()
+                                ->maxLength(255),
 
-                        TextInput::make('email')
-                            ->label('Correo Electrónico')
-                            ->email()
-                            ->required()
-                            ->maxLength(255),
+                            TextInput::make('email')
+                                ->label('Correo Electrónico')
+                                ->email()
+                                ->required()
+                                ->maxLength(255),
 
-                        TextInput::make('password')
-                            ->label('Contraseña')
-                            ->password()
-                            ->maxLength(255)
-                            ->same('password_confirmation')
-                            ->dehydrated(fn ($state) => filled($state)) // solo guarda si se llenó
-                            ->dehydrateStateUsing(fn ($state) => bcrypt($state)),
+                            TextInput::make('password')
+                                ->label('Contraseña')
+                                ->password()
+                                ->maxLength(255)
+                                ->same('password_confirmation')
+                                ->dehydrated(fn($state) => filled($state)) // solo guarda si se llenó
+                                ->dehydrateStateUsing(fn($state) => bcrypt($state)),
 
-                        TextInput::make('password_confirmation')
-                            ->label('Confirmar Contraseña')
-                            ->password()
-                            ->maxLength(255)
-                            ->dehydrated(false),
-                    ])->relationship('user'),
-                ]),
-        ]);
-                
+                            TextInput::make('password_confirmation')
+                                ->label('Confirmar Contraseña')
+                                ->password()
+                                ->maxLength(255)
+                                ->dehydrated(false),
+                        ])->relationship('user'),
+                    ]),
+
+                Select::make('grupos')
+                    ->label('Grupos asignados')
+                    ->multiple()
+                    ->relationship('grupos', 'nombre') // usa la relación belongsToMany
+                    ->getOptionLabelFromRecordUsing(function ($record) {
+                        return "{$record->nombre} - {$record->curso->nombre}"; // o año si es mejor
+                    })
+                    ->preload()
+                    ->searchable()
+            ]);
     }
 
     public static function table(Table $table): Table

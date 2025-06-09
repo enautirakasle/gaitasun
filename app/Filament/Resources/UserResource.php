@@ -40,7 +40,7 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\CheckboxList::make('roles')
                     ->relationship('roles', 'name')
-                    ->columns(2)
+                    ->columns(3)
                     ->required()
             ]);
     }

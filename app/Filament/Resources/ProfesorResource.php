@@ -11,6 +11,7 @@ use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput\Password;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -64,6 +65,15 @@ class ProfesorResource extends Resource
                             ->dehydrated(false),
                     ])->relationship('user'),
                 ]),
+            Select::make('grupos')
+                    ->label('Grupos asignados')
+                    ->multiple()
+                    ->relationship('grupos', 'nombre') // usa la relación belongsToMany
+                    ->getOptionLabelFromRecordUsing(function ($record) {
+                        return "{$record->nombre} - {$record->curso->nombre}"; // o año si es mejor
+                    })
+                    ->preload()
+                    ->searchable()
         ]);
                 
     }
