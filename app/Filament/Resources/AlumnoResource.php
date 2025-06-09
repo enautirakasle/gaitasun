@@ -5,11 +5,17 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AlumnoResource\Pages;
 use App\Filament\Resources\AlumnoResource\RelationManagers;
 use App\Models\Alumno;
+use App\Models\User;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -29,12 +35,41 @@ class AlumnoResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-            ]);
+      return $form
+        ->schema([
+            Hidden::make('user_id'),
+
+            Section::make('Datos del Usuario')
+                ->schema([
+                    Group::make([
+                        TextInput::make('name')
+                            ->label('Nombre')
+                            ->required()
+                            ->maxLength(255),
+
+                        TextInput::make('email')
+                            ->label('Correo Electrónico')
+                            ->email()
+                            ->required()
+                            ->maxLength(255),
+
+                        TextInput::make('password')
+                            ->label('Contraseña')
+                            ->password()
+                            ->maxLength(255)
+                            ->same('password_confirmation')
+                            ->dehydrated(fn ($state) => filled($state)) // solo guarda si se llenó
+                            ->dehydrateStateUsing(fn ($state) => bcrypt($state)),
+
+                        TextInput::make('password_confirmation')
+                            ->label('Confirmar Contraseña')
+                            ->password()
+                            ->maxLength(255)
+                            ->dehydrated(false),
+                    ])->relationship('user'),
+                ]),
+        ]);
+                
     }
 
     public static function table(Table $table): Table

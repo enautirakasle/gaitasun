@@ -15,5 +15,9 @@ class Alumno extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function grupos()
+    {
+        return $this->belongsToMany(Grupo::class);
+    }
     
 }
