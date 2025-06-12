@@ -29,7 +29,9 @@ class EvidenciasRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('fecha')
             ->columns([
-                Tables\Columns\TextColumn::make('fecha'),
+                Tables\Columns\TextColumn::make('fecha')
+                    ->sortable()
+                    ->date('d/m/Y'),
                 Tables\Columns\TextColumn::make('indicador.nombre')
                     ->label('Indicador')
                     ->searchable()

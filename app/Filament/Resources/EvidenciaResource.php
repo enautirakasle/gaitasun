@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Filters\SelectFilter;
 use App\Models\Alumno;
+use App\Models\Grupo;
 
 class EvidenciaResource extends Resource
 {
@@ -99,6 +100,17 @@ class EvidenciaResource extends Resource
                             ->get()
                             ->mapWithKeys(fn($alumno) => [
                                 $alumno->id => $alumno->user->name,
+                            ])
+                            ->toArray();
+                    })
+                    ->searchable(),
+                SelectFilter::make('grupo_id')
+                    ->label('Grupos')
+                    ->options(function () {
+                        return Grupo::whereHas('alumnos') // Solo grupos con alumnos
+                            ->get()
+                            ->mapWithKeys(fn($grupo) => [
+                                $grupo->id => $grupo->nombre,
                             ])
                             ->toArray();
                     })
