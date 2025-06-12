@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('evidencias', function (Blueprint $table) {
             $table->id();
             $table->foreignId('indicador_id')
-                ->constrained('indicadores')
+                ->constrained('indicadors')
                 ->onDelete('cascade');
             $table->foreignId('alumno_id')
                 ->constrained('alumnos')
                 ->onDelete('cascade');
             $table->foreignId('profesor_id')
-                ->constrained('profesores')
+                ->constrained('profesors')
                 ->onDelete('cascade');
             $table->date('fecha');
             $table->string('descripcion')->nullable();
