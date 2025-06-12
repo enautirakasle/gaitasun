@@ -16,4 +16,9 @@ class Indicador extends Model
     {
         return $this->belongsTo(CompetenciaTransversal::class);
     }
+
+    public function evidencias()
+    {
+        return $this->hasMany(Evidencia::class);
+    }
 }

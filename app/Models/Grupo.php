@@ -20,6 +20,11 @@ class Grupo extends Model
 
     public function alumnos()
     {
-        return $this->belongsToMany(Alumno::class);
+        return $this->belongsToMany(Alumno::class, 'alumno_grupo', 'grupo_id', 'alumno_id');    
+    }
+
+       public function profesores()
+    {
+        return $this->belongsToMany(Profesor::class, 'grupo_profesor', 'grupo_id', 'profesor_id');    
     }
 }

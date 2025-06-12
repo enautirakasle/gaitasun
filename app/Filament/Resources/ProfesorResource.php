@@ -91,11 +91,15 @@ class ProfesorResource extends Resource
                     ->label('Email')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('user.roles.name')
-                    ->label('Roles')
+                Tables\Columns\TextColumn::make('user.profesor.grupos.nombre')
+                    ->label('Grupos')
                     ->badge()
-                    ->separator(', ')
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('user.roles.name')
+                //     ->label('Roles')
+                //     ->badge()
+                //     ->separator(', ')
+                //     ->sortable(),
+                
             ])
             ->filters([
                 //

@@ -94,11 +94,24 @@ class AlumnoResource extends Resource
                     ->label('Email')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('user.roles.name')
-                    ->label('Roles')
+                // Tables\Columns\TextColumn::make('grupos')
+                //     ->label('Grupos')
+                //     ->formatStateUsing(function ($record) {
+                //         // $record es el modelo Alumno
+                //         // Aquí retornamos los nombres de grupos separados por coma
+                //         return $record->grupos->pluck('nombre')->join(', ');
+                //     })
+                //     ->sortable(false)
+                //     ->searchable(false),
+                Tables\Columns\TextColumn::make('user.alumno.grupos.nombre')
+                    ->label('Grupos')
                     ->badge()
-                    ->separator(', ')
-                    ->sortable(),
+                    ->searchable()
+                // Tables\Columns\TextColumn::make('user.roles.name')
+                //     ->label('Roles')
+                //     ->badge()
+                //     ->separator(', ')
+                //     ->sortable(),
                 // Tables\Columns\TextColumn::make('created_at')
                 //     ->dateTime()
                 //     ->sortable()

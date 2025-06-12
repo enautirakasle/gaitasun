@@ -15,8 +15,13 @@ class Profesor extends Model
         return $this->belongsTo(User::class);
     }
 
-     public function grupos()
+    public function grupos()
     {
-        return $this->belongsToMany(Grupo::class);
+        return $this->belongsToMany(Grupo::class, 'grupo_profesor', 'profesor_id', 'grupo_id');
+    }
+
+    public function evidencias()
+    {
+        return $this->hasMany(Evidencia::class);
     }
 }

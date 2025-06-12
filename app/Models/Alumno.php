@@ -17,7 +17,11 @@ class Alumno extends Model
 
     public function grupos()
     {
-        return $this->belongsToMany(Grupo::class);
+        return $this->belongsToMany(Grupo::class, 'alumno_grupo', 'alumno_id', 'grupo_id');
     }
-    
+
+    public function evidencias()
+    {
+        return $this->hasMany(Evidencia::class);
+    }
 }
