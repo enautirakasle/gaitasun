@@ -57,21 +57,19 @@ class EvidenciaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('indicador_id')
+                Tables\Columns\TextColumn::make('indicador.nombre')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('alumno_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('alumno.user.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('profesor_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('profesor.user.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('fecha')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('descripcion')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('grupo_id')
+                Tables\Columns\TextColumn::make('grupo.nombre')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
