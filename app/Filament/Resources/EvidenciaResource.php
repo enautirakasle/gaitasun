@@ -13,6 +13,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\SelectFilter;
+use App\Models\Alumno;
 
 class EvidenciaResource extends Resource
 {
@@ -25,19 +27,19 @@ class EvidenciaResource extends Resource
         return $form
             ->schema([
                 Select::make('indicador_id')
-                ->relationship('indicador', 'nombre')
+                    ->relationship('indicador', 'nombre')
                     ->required()
                     ->searchable()
                     ->preload(),
                 Select::make('alumno_id')
                     ->relationship('alumno', 'id')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->user->name)
+                    ->getOptionLabelFromRecordUsing(fn($record) => $record->user->name)
                     ->required()
                     ->searchable()
                     ->preload(),
                 Select::make('profesor_id')
                     ->relationship('profesor', 'id')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->user->name)
+                    ->getOptionLabelFromRecordUsing(fn($record) => $record->user->name)
                     ->required()
                     ->searchable()
                     ->preload(),
@@ -61,11 +63,13 @@ class EvidenciaResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('alumno.user.name')
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Alumno'),
                 Tables\Columns\TextColumn::make('profesor.user.name')
-                    ->sortable(),
+                    ->sortable()
+                    ->label('Profesor'),
                 Tables\Columns\TextColumn::make('fecha')
-                    ->date()
+                    ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('descripcion')
                     ->searchable(),
@@ -82,7 +86,23 @@ class EvidenciaResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                // SelectFilter::make('aluumno_id')
+                //     ->relationship('alumno', 'id')
+                //     ->getOptionLabelFromRecordUsing(fn($record) => $record->user->name)
+                //     ->searchable()
+                //     ->preload(),
+                SelectFilter::make('alumno_id')
+                    ->label('Alumno con evidencias')
+                    ->options(function () {
+                        return Alumno::has('evidencias')
+                            ->with('user')
+                            ->get()
+                            ->mapWithKeys(fn($alumno) => [
+                                $alumno->id => $alumno->user->name,
+                            ])
+                            ->toArray();
+                    })
+                    ->searchable()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

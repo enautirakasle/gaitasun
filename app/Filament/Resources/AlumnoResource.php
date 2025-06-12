@@ -18,6 +18,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AlumnoResource extends Resource
@@ -137,7 +138,7 @@ class AlumnoResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\EvidenciasRelationManager::class,
         ];
     }
 
