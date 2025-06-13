@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         ]);
 
         // Asignar el rol de admin
-        $user->assignRole('admin');
+        $user->assignRole('admin');//spatie
       
     }
 }
