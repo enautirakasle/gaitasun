@@ -38,16 +38,19 @@ class EvidenciaResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('descripcion')
                     ->maxLength(255),
+                Select::make('curso_filtro') // este campo no existe en DB
+                    ->label('Curso')
+                    ->options(\App\Models\Curso::pluck('nombre', 'id'))
+                    ->live(), // importante para reactividad
                 Select::make('grupo_id')
                     ->label('Grupo')
-                    ->options(function () {
-                        return \App\Models\Grupo::whereHas('alumnos')
-                            ->whereHas('profesores')
-                            ->get()
-                            ->mapWithKeys(fn($grupo) => [
-                                $grupo->id => $grupo->nombre,
-                            ]);
-                    })
+                    ->options(
+                        fn(Get $get) =>
+                        \App\Models\Grupo::where('curso_id', $get('curso_filtro'))
+                            ->whereHas('alumnos') // opcional
+                            ->whereHas('profesores') // opcional
+                            ->pluck('nombre', 'id')
+                    )
                     ->searchable()
                     ->required(),
                 Select::make('alumno_id')
