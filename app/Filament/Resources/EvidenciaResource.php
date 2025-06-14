@@ -7,6 +7,8 @@ use App\Filament\Resources\EvidenciaResource\RelationManagers;
 use App\Models\Evidencia;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Illuminate\Support\Collection;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -32,27 +34,66 @@ class EvidenciaResource extends Resource
                     ->required()
                     ->searchable()
                     ->preload(),
-                Select::make('alumno_id')
-                    ->relationship('alumno', 'id')
-                    ->getOptionLabelFromRecordUsing(fn($record) => $record->user->name)
-                    ->required()
-                    ->searchable()
-                    ->preload(),
-                Select::make('profesor_id')
-                    ->relationship('profesor', 'id')
-                    ->getOptionLabelFromRecordUsing(fn($record) => $record->user->name)
-                    ->required()
-                    ->searchable()
-                    ->preload(),
                 Forms\Components\DatePicker::make('fecha')
                     ->required(),
                 Forms\Components\TextInput::make('descripcion')
                     ->maxLength(255),
                 Select::make('grupo_id')
-                    ->relationship('grupo', 'nombre')
-                    ->required()
+                    ->label('Grupo')
+                    ->options(function () {
+                        return \App\Models\Grupo::whereHas('alumnos')
+                            ->whereHas('profesores')
+                            ->get()
+                            ->mapWithKeys(fn($grupo) => [
+                                $grupo->id => $grupo->nombre,
+                            ]);
+                    })
                     ->searchable()
-                    ->preload(),
+                    ->required(),
+                Select::make('alumno_id')
+                    ->label('Alumno')
+                    ->options(function (Get $get): Collection {
+                        $grupoId = $get('grupo_id');
+
+                        if (!$grupoId) {
+                            return collect();
+                        }
+
+                        return Alumno::whereHas(
+                            'grupos',
+                            fn($query) =>
+                            $query->where('grupos.id', $grupoId)
+                        )
+                            ->with('user')
+                            ->get()
+                            ->mapWithKeys(fn($alumno) => [
+                                $alumno->id => $alumno->user->name,
+                            ]);
+                    })
+                    ->searchable()
+                    ->required(),
+                Select::make('profesor_id')
+                    ->label('Profesor')
+                    ->options(function (Get $get): Collection {
+                        $grupoId = $get('grupo_id');
+
+                        if (!$grupoId) {
+                            return collect();
+                        }
+
+                        return \App\Models\Profesor::whereHas(
+                            'grupos',
+                            fn($query) =>
+                            $query->where('grupos.id', $grupoId)
+                        )
+                            ->with('user')
+                            ->get()
+                            ->mapWithKeys(fn($profesor) => [
+                                $profesor->id => $profesor->user->name,
+                            ]);
+                    })
+                    ->searchable()
+                    ->required()
             ]);
     }
 
