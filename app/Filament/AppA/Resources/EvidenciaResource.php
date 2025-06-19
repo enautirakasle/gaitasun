@@ -50,6 +50,9 @@ class EvidenciaResource extends Resource
                 Tables\Columns\TextColumn::make('indicador.nombre')
                     ->numeric()
                     ->sortable(),
+                    Tables\Columns\TextColumn::make('indicador.competenciaTransversal.nombre')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('alumno.user.name')
                     ->label('Alumno')
                     ->sortable(),
