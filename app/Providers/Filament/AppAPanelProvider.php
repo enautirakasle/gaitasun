@@ -53,6 +53,7 @@ class AppAPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                'check.role:alumno,profesor,admin',
             ]);
     }
 }
