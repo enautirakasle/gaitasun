@@ -29,7 +29,12 @@ class AppPPanelProvider extends PanelProvider
             ->path('app-p')
             ->profile(isSimple: false)
             ->colors([
-                'primary' => Color::Amber,
+                'danger' => Color::Rose,  // Un rojo rosado, similar pero un poco más suave
+                'gray' => Color::Zinc,       // Un gris con un toque más cálido y moderno
+                'info' => Color::Sky,        // Un azul celeste suave
+                'primary' => Color::Fuchsia, // Un color morado intenso y llamativo
+                'success' => Color::Lime,    // Un verde más brillante y energizante
+                'warning' => Color::Yellow,  // Amarillo brillante para llamar la atención
             ])
             ->discoverResources(in: app_path('Filament/AppP/Resources'), for: 'App\\Filament\\AppP\\Resources')
             ->discoverPages(in: app_path('Filament/AppP/Pages'), for: 'App\\Filament\\AppP\\Pages')

@@ -28,7 +28,12 @@ class AppAPanelProvider extends PanelProvider
             ->login()
             ->profile(isSimple: false)
             ->colors([
-                'primary' => Color::Amber,
+                'danger' => Color::Red, // Cambio a un rojo más clásico y vibrante
+                'gray' => Color::Slate, // Un tono más frío de gris
+                'info' => Color::Cyan, // Un azul más claro y fresco
+                'primary' => Color::Blue, // Cambiado a un azul clásico
+                'success' => Color::Teal, // Verde azulado que da un toque suave
+                'warning' => Color::Amber, // Un tono amarillo-anaranjado más suave
             ])
             ->discoverResources(in: app_path('Filament/AppA/Resources'), for: 'App\\Filament\\AppA\\Resources')
             ->discoverPages(in: app_path('Filament/AppA/Pages'), for: 'App\\Filament\\AppA\\Pages')

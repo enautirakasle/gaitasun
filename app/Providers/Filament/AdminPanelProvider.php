@@ -32,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->profile(isSimple: false)
             ->colors([
                 // 'primary' => Color::Amber,
                 'danger' => Color::Rose,
@@ -61,7 +62,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                
+
             ])
             ->authMiddleware([
                 Authenticate::class,
