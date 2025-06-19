@@ -42,8 +42,8 @@ class AppAPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/AppA/Widgets'), for: 'App\\Filament\\AppA\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                // Widgets\AccountWidget::class,
+                // Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
