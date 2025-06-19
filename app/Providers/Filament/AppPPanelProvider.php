@@ -18,24 +18,23 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AppAPanelProvider extends PanelProvider
+class AppPPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('app-a')
-            ->path('app-a')
-            ->login()
+            ->id('app-p')
+            ->path('app-p')
             ->profile(isSimple: false)
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/AppA/Resources'), for: 'App\\Filament\\AppA\\Resources')
-            ->discoverPages(in: app_path('Filament/AppA/Pages'), for: 'App\\Filament\\AppA\\Pages')
+            ->discoverResources(in: app_path('Filament/AppP/Resources'), for: 'App\\Filament\\AppP\\Resources')
+            ->discoverPages(in: app_path('Filament/AppP/Pages'), for: 'App\\Filament\\AppP\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/AppA/Widgets'), for: 'App\\Filament\\AppA\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/AppP/Widgets'), for: 'App\\Filament\\AppP\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
