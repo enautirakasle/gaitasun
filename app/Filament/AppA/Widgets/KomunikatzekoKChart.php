@@ -33,7 +33,7 @@ class KomunikatzekoKChart extends ChartWidget
             ->groupBy('competencia_transversals.id')
             ->pluck('total_evidencias', 'competencia_id');
 
-            // dd($data);  
+        // dd($data);  
         $labels = CompetenciaTransversal::all();
 
         // dd($data);
@@ -68,5 +68,12 @@ class KomunikatzekoKChart extends ChartWidget
     protected function getType(): string
     {
         return 'polarArea';
+    }
+
+    public static function canView(): bool
+    {
+        /** @var \app\Models\User $user */
+        $user = Auth::user();
+        return $user->hasRole('alumno');
     }
 }
