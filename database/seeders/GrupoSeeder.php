@@ -28,7 +28,7 @@ class GrupoSeeder extends Seeder
                 'curso_id' => 1, // Assuming the second course exists
             ],
              [
-                'nombre' => 'DB1 A',
+                'nombre' => 'DBH1 A',
                 'curso_id' => 2, // Assuming the first course exists
             ],
             [
