@@ -31,8 +31,12 @@ class GruposRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('nombre')
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('nombre')
-                    ->url(AlumnoResource::getUrl('index')),
+                    ->url(fn($record) => AlumnoResource::getUrl('index', ['record' => $record->id]))
             ])
             ->filters([
                 //

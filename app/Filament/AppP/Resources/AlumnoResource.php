@@ -64,7 +64,7 @@ class AlumnoResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAlumnos::route('/'),
+            'index' => Pages\ListAlumnos::route('/grupo/{record?}'),
             'create' => Pages\CreateAlumno::route('/create'),
             'edit' => Pages\EditAlumno::route('/{record}/edit'),
         ];

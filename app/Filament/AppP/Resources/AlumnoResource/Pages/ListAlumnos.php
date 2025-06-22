@@ -5,15 +5,50 @@ namespace App\Filament\AppP\Resources\AlumnoResource\Pages;
 use App\Filament\AppP\Resources\AlumnoResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Components\Tab;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListAlumnos extends ListRecords
 {
     protected static string $resource = AlumnoResource::class;
 
-    protected function getHeaderActions(): array
+    public int|null $groupId = null;
+
+    public function mount(?string $record = null): void
     {
-        return [
-            Actions\CreateAction::make(),
-        ];
+        parent::mount();
+
+        if ($record) {
+            // Puedes usar $record para filtrar la tabla, ejemplo:
+            $this->groupId = $record;
+            // dd($this->groupId);
+        }
     }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->modifyQueryUsing(
+                function (Builder $query) {
+                    $query->where('id', '<', $this->groupId);
+                    return $query->withoutGlobalScopes();
+                }
+            )->columns(AlumnoResource::table(new Table($this))->getColumns());
+    }
+
+
+
+
+
+    // public function getTabs(): array
+    // {
+    //     return [
+    //         'all' => Tab::make(),
+    //         'andiak' => Tab::make()
+    //             ->modifyQueryUsing(fn(Builder $query) => $query->where('id', '>', 5)),
+    //         'txikiak' => Tab::make()
+    //             ->modifyQueryUsing(fn(Builder $query) => $query->where('id', '<=', 5)),
+    //     ];
+    // }
 }
