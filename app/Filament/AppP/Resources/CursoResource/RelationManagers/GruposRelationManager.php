@@ -2,11 +2,13 @@
 
 namespace App\Filament\AppP\Resources\CursoResource\RelationManagers;
 
+use App\Filament\AppP\Resources\AlumnoResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use App\Models\Grupo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -29,7 +31,8 @@ class GruposRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('nombre')
             ->columns([
-                Tables\Columns\TextColumn::make('nombre'),
+                Tables\Columns\TextColumn::make('nombre')
+                    ->url(AlumnoResource::getUrl('index')),
             ])
             ->filters([
                 //
