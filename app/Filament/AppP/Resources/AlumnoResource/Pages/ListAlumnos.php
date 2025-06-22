@@ -31,9 +31,13 @@ class ListAlumnos extends ListRecords
         return $table
             ->modifyQueryUsing(
                 function (Builder $query) {
-                    $query->where('id', '<', $this->groupId);
-                    return $query->withoutGlobalScopes();
+                    $groupId = $this->groupId; // o request()->get('group_id') si está en recurso
+
+                    return $query->whereHas('grupos', function (Builder $q) use ($groupId) {
+                        $q->where('grupos.id', $groupId);
+                    });
                 }
+
             )->columns(AlumnoResource::table(new Table($this))->getColumns());
     }
 
