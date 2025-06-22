@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -40,7 +41,7 @@ class CursoResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -62,6 +63,7 @@ class CursoResource extends Resource
             'index' => Pages\ListCursos::route('/'),
             'create' => Pages\CreateCurso::route('/create'),
             'edit' => Pages\EditCurso::route('/{record}/edit'),
+            'view' => Pages\ViewCurso::route('/{record}'),
         ];
     }
 
@@ -70,5 +72,12 @@ class CursoResource extends Resource
         /** @var \App\Models\User $user */
         $user = Auth::user();
         return $user && $user->hasRole(['admin', 'profesor']);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin']) && $record->profesor_id === $user->id;
     }
 }
