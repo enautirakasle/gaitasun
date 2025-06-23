@@ -38,7 +38,9 @@ class ListAlumnos extends ListRecords
                     });
                 }
 
-            )->columns(AlumnoResource::table(new Table($this))->getColumns());
+            )
+            ->columns(AlumnoResource::table(new Table($this))->getColumns())
+            ->actions(AlumnoResource::table(new Table($this))->getActions());
     }
 
 

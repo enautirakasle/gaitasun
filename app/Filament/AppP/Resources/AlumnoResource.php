@@ -10,8 +10,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\Action;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class AlumnoResource extends Resource
 {
@@ -44,13 +46,30 @@ class AlumnoResource extends Resource
             ->filters([
                 //
             ])
+            ->recordUrl(null) // ← Agregar esta línea para deshabilitar el click en la fila
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Action::make('komunikazio')
+                    ->label('Komunikazio')
+                    ->icon('heroicon-o-chat-bubble-left-right')
+                    ->url(fn($record) => AlumnoResource::getUrl('komunikazio', ['record' => $record->id]))
+                    ->openUrlInNewTab(false), // o true si quieres nueva ventana
+                Action::make('pentsatzeko')
+                    ->label('Pentsatzeko')
+                    ->icon('heroicon-o-light-bulb')
+                    ->url(fn($record) => AlumnoResource::getUrl('pentsatzeko', ['record' => $record->id])),
+            ])->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])->bulkActions([
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                //
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 
@@ -68,6 +87,23 @@ class AlumnoResource extends Resource
             'create' => Pages\CreateAlumno::route('/create'),
             'edit' => Pages\EditAlumno::route('/{record}/edit'),
             'view' => Pages\ViewAlumno::route('/{record}'),
+            'komunikazio' => Pages\Komunikazio::route('/{record}/komunikazio'),
+            'pentsatzeko' => Pages\Pentsatzeko::route('/{record}/pentsatzeko'),
         ];
     }
+
+
+    public static function canViewAny(): bool
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin', 'profesor']);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        return $user && $user->hasRole(['admin']) && $record->profesor_id === $user->id;
+    } 
 }
