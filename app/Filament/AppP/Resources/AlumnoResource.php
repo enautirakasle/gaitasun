@@ -48,6 +48,32 @@ class AlumnoResource extends Resource
             ])
             ->recordUrl(null) // ← Agregar esta línea para deshabilitar el click en la fila
             ->actions([
+
+                // Generar acciones dinámicamente desde CompetenciaTransversal
+                ...\App\Models\CompetenciaTransversal::all()->map(function ($competencia) {
+                    return Action::make(substr($competencia->nombre, 0, 10))
+                        ->label(substr($competencia->nombre, 0, 10))
+                        ->form([
+                            Forms\Components\Select::make('indicador_id')
+                                ->label('Indicador')
+                                ->placeholder('Selecciona un indicador')
+                                ->options($competencia->indicadors()
+                                    ->pluck('nombre', 'id') // o el campo que uses para el nombre
+                                    ->toArray())
+                                ->required()
+                                ->searchable(), // Para que sea buscable si hay muchos indicadores
+                            Forms\Components\Textarea::make('descripcion')
+                                ->label('Descripción')
+                                ->rows(4),
+                            // más campos...
+                        ])
+                        // ->action(fn($record) => dd('hola'));
+                        ->action(function (array $data, $record) {
+                        // Procesar los datos del formulario
+                        // $record->pentsatzekos()->create($data);
+                    });
+                })->all(),
+                
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Action::make('komunikazio')
@@ -58,7 +84,40 @@ class AlumnoResource extends Resource
                 Action::make('pentsatzeko')
                     ->label('Pentsatzeko')
                     ->icon('heroicon-o-light-bulb')
-                    ->url(fn($record) => AlumnoResource::getUrl('pentsatzeko', ['record' => $record->id])),
+                    ->form([
+                        Forms\Components\Select::make('indicador_id')
+                            ->label('Indicador')
+                            ->placeholder('Selecciona un indicador')
+                            ->options(function () {
+                                // Buscar la competencia transversal "Pentsatzeko"
+                                $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'Pentsatzeko')
+                                    ->orWhere('nombre', 'LIKE', '%pentsatzen%') // Por si tiene variaciones
+                                    ->first();
+
+                                if (!$competencia) {
+                                    return [];
+                                }
+
+                                // Obtener los indicadores de esa competencia
+                                return $competencia->indicadors()
+                                    ->pluck('nombre', 'id') // o el campo que uses para el nombre
+                                    ->toArray();
+                            })
+                            ->required()
+                            ->searchable(), // Para que sea buscable si hay muchos indicadores
+                        Forms\Components\Textarea::make('descripcion')
+                            ->label('Descripción')
+                            ->rows(4),
+                        // más campos...
+                    ])
+                    ->action(function (array $data, $record) {
+                        // Procesar los datos del formulario
+                        // $record->pentsatzekos()->create($data);
+                    }),
+                // Action::make('pentsatzeko')
+                //     ->label('Pentsatzeko')
+                //     ->icon('heroicon-o-light-bulb')
+                //     ->url(fn($record) => AlumnoResource::getUrl('pentsatzeko', ['record' => $record->id])),
             ])->headerActions([
                 Tables\Actions\CreateAction::make(),
             ])->bulkActions([
@@ -105,5 +164,5 @@ class AlumnoResource extends Resource
         /** @var \App\Models\User $user */
         $user = Auth::user();
         return $user && $user->hasRole(['admin']) && $record->profesor_id === $user->id;
-    } 
+    }
 }
