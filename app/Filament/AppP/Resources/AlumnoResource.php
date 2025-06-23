@@ -14,6 +14,7 @@ use Filament\Tables\Actions\Action;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Evidencia;
 
 class AlumnoResource extends Resource
 {
@@ -48,6 +49,8 @@ class AlumnoResource extends Resource
             ])
             ->recordUrl(null) // ← Agregar esta línea para deshabilitar el click en la fila
             ->actions([
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
 
                 // Generar acciones dinámicamente desde CompetenciaTransversal
                 ...\App\Models\CompetenciaTransversal::all()->map(function ($competencia) {
@@ -69,18 +72,61 @@ class AlumnoResource extends Resource
                         ])
                         // ->action(fn($record) => dd('hola'));
                         ->action(function (array $data, $record) {
-                        // Procesar los datos del formulario
-                        // $record->pentsatzekos()->create($data);
-                    });
+                            // Procesar los datos del formulario
+                            // $record->pentsatzekos()->create($data);
+                        });
                 })->all(),
-                
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+
                 Action::make('komunikazio')
                     ->label('Komunikazio')
                     ->icon('heroicon-o-chat-bubble-left-right')
-                    ->url(fn($record) => AlumnoResource::getUrl('komunikazio', ['record' => $record->id]))
-                    ->openUrlInNewTab(false), // o true si quieres nueva ventana
+
+                    ->form([
+                        Forms\Components\Select::make('indicador_id')
+                            ->label('Indicador')
+                            ->placeholder('Selecciona un indicador')
+                            ->options(function () {
+                                // Buscar la competencia transversal "Komunikatzeko"
+                                $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'Komunikatzeko')
+                                    ->orWhere('nombre', 'LIKE', '%komunikatzeko%') // Por si tiene variaciones
+                                    ->first();
+
+                                if (!$competencia) {
+                                    return [];
+                                }
+
+                                // Obtener los indicadores de esa competencia
+                                return $competencia->indicadors()
+                                    ->pluck('nombre', 'id') // o el campo que uses para el nombre
+                                    ->toArray();
+                            })
+                            ->required()
+                            ->searchable(), // Para que sea buscable si hay muchos indicadores
+
+                        // más campos...
+                        Forms\Components\Textarea::make('descripcion')
+                            ->label('Descripción')
+                            ->rows(4)
+                            ->required(),
+                    ])
+
+                    ->action(function (array $data, $record) {
+                        // Capturar grupo_id desde la URL
+                        $segments = request()->segments();
+                        $grupoIndex = array_search('grupo', $segments);
+                        $grupoId = $grupoIndex !== false && isset($segments[$grupoIndex + 1])
+                            ? $segments[$grupoIndex + 1]
+                            : null;
+
+                        Evidencia::create([
+                            'indicador_id' => $data['indicador_id'],
+                            'alumno_id' => $record->id,
+                            'profesor_id' => Auth::user()->profesor->id ?? null,
+                            'fecha' => now()->toDateString(),
+                            'descripcion' => $data['descripcion'] ?? null,
+                            'grupo_id' => $grupoId, // Ahora sí está definida
+                        ]);
+                    }),
                 Action::make('pentsatzeko')
                     ->label('Pentsatzeko')
                     ->icon('heroicon-o-light-bulb')
@@ -105,15 +151,14 @@ class AlumnoResource extends Resource
                             })
                             ->required()
                             ->searchable(), // Para que sea buscable si hay muchos indicadores
-                        Forms\Components\Textarea::make('descripcion')
-                            ->label('Descripción')
-                            ->rows(4),
+
                         // más campos...
                     ])
                     ->action(function (array $data, $record) {
                         // Procesar los datos del formulario
                         // $record->pentsatzekos()->create($data);
                     }),
+                //beste azpipage bat zabaltzeko aukera
                 // Action::make('pentsatzeko')
                 //     ->label('Pentsatzeko')
                 //     ->icon('heroicon-o-light-bulb')
@@ -149,6 +194,16 @@ class AlumnoResource extends Resource
             'komunikazio' => Pages\Komunikazio::route('/{record}/komunikazio'),
             'pentsatzeko' => Pages\Pentsatzeko::route('/{record}/pentsatzeko'),
         ];
+    }
+
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['user_id'] = auth()->id();
+
+        dd($data);
+
+        return $data;
     }
 
 
