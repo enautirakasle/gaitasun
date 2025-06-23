@@ -27,6 +27,7 @@ class AppPPanelProvider extends PanelProvider
         return $panel
             ->id('app-p')
             ->path('app-p')
+            ->login()
             ->profile(isSimple: false)
             ->colors([
                 'danger' => Color::Rose,  // Un rojo rosado, similar pero un poco más suave
