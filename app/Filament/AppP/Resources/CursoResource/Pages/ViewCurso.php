@@ -21,4 +21,3 @@ class ViewCurso extends ViewRecord
         return true;
     }
 }
- 

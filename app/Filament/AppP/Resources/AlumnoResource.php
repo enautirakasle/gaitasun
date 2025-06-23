@@ -68,7 +68,6 @@ class AlumnoResource extends Resource
             'create' => Pages\CreateAlumno::route('/create'),
             'edit' => Pages\EditAlumno::route('/{record}/edit'),
             'view' => Pages\ViewAlumno::route('/{record}'),
-
         ];
     }
 }
