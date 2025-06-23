@@ -45,7 +45,7 @@ class AlumnoResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -67,6 +67,8 @@ class AlumnoResource extends Resource
             'index' => Pages\ListAlumnos::route('/grupo/{record?}'),
             'create' => Pages\CreateAlumno::route('/create'),
             'edit' => Pages\EditAlumno::route('/{record}/edit'),
+            'view' => Pages\ViewAlumno::route('/{record}'),
+
         ];
     }
 }
