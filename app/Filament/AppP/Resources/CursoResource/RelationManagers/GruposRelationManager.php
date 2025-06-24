@@ -48,11 +48,11 @@ class GruposRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\Action::make('alumnos')
-                    ->label(fn($record) => 'Ikasleak (' . $record->alumnos()->count() . ')')
-                    ->url(fn($record) => AlumnoResource::getUrl('index', ['record' => $record->id]))
-                    ->color('primary'),
+                // Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\Action::make('alumnos')
+                //     ->label(fn($record) => 'Ikasleak (' . $record->alumnos()->count() . ')')
+                //     ->url(fn($record) => AlumnoResource::getUrl('index', ['record' => $record->id]))
+                //     ->color('primary'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
