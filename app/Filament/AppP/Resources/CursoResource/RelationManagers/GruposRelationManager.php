@@ -37,22 +37,19 @@ class GruposRelationManager extends RelationManager
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nombre')
                 ->label('Grupo')
-                    ->sortable(),
-                //     ->url(fn($record) => AlumnoResource::getUrl('index', ['record' => $record->id]))
+                    ->sortable()
+                    ->url(fn($record) => AlumnoResource::getUrl('index', ['record' => $record->id]))
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
-                // Tables\Actions\Action::make('alumnos')
-                //     ->label(fn($record) => 'Ikasleak (' . $record->alumnos()->count() . ')')
-                //     ->url(fn($record) => AlumnoResource::getUrl('index', ['record' => $record->id]))
-                //     ->color('primary'),
+                Tables\Actions\Action::make('alumnos')
+                    ->label(fn($record) => 'Ikasleak (' . $record->alumnos()->count() . ')')
+                    ->url(fn($record) => AlumnoResource::getUrl('index', ['record' => $record->id]))
+                    ->color('primary'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

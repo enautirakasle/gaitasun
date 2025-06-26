@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\AppP\Resources\AlumnoResource\Pages;
 
 use App\Filament\AppP\Resources\AlumnoResource;
@@ -14,7 +15,7 @@ use App\Models\Evidencia;
 class ListAlumnos extends ListRecords
 {
     protected static string $resource = AlumnoResource::class;
-    
+
     public int|null $groupId = null;
 
     public function mount(?string $record = null): void
@@ -41,7 +42,7 @@ class ListAlumnos extends ListRecords
                 // Acciones personalizadas con acceso al groupId
                 \Filament\Tables\Actions\ViewAction::make(),
                 \Filament\Tables\Actions\EditAction::make(),
-                
+
                 Action::make('komunikazio')
                     ->label('Komunikazio')
                     ->icon('heroicon-o-chat-bubble-left-right')
@@ -74,13 +75,13 @@ class ListAlumnos extends ListRecords
                             'descripcion' => $data['descripcion'] ?? null,
                             'grupo_id' => $this->groupId, // Aquí usas el groupId de la página
                         ]);
-                        
+
                         \Filament\Notifications\Notification::make()
                             ->title('Evidencia guardada correctamente')
                             ->success()
                             ->send();
                     }),
-                    
+
                 Action::make('pentsatzeko')
                     ->label('Pentsatzeko')
                     ->icon('heroicon-o-light-bulb')
@@ -92,6 +93,143 @@ class ListAlumnos extends ListRecords
                             ->options(function () {
                                 $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'Pentsatzeko')
                                     ->orWhere('nombre', 'LIKE', '%pentsatzen%')
+                                    ->first();
+
+                                if (!$competencia) {
+                                    return [];
+                                }
+
+                                return $competencia->indicadors()
+                                    ->pluck('nombre', 'id')
+                                    ->toArray();
+                            })
+                            ->required()
+                            ->searchable(),
+
+                        Forms\Components\Textarea::make('descripcion')
+                            ->label('Descripción')
+                            ->rows(2),
+                    ])
+                    ->action(function (array $data, $record) {
+                        Evidencia::create([
+                            'indicador_id' => $data['indicador_id'],
+                            'alumno_id' => $record->id,
+                            'profesor_id' => Auth::user()->profesor->id ?? null,
+                            'fecha' => now()->toDateString(),
+                            'descripcion' => $data['descripcion'] ?? null,
+                            'grupo_id' => $this->groupId, // Aquí también usas el groupId
+                        ]);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Evidencia guardada correctamente')
+                            ->success()
+                            ->send();
+                    }),
+
+
+
+
+
+                Action::make('elkarbizitzarako')
+                    ->label('Elkarbizitzarako')
+                    ->icon('heroicon-o-light-bulb')
+                    ->form([
+                        Forms\Components\Select::make('indicador_id')
+                            ->label('Indicador')
+                            ->preload()
+                            ->placeholder('Selecciona un indicador')
+                            ->options(function () {
+                                $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'Elkarbizitzarako')
+                                    ->orWhere('nombre', 'LIKE', '%elkarbizitzarako%')
+                                    ->first();
+
+                                if (!$competencia) {
+                                    return [];
+                                }
+
+                                return $competencia->indicadors()
+                                    ->pluck('nombre', 'id')
+                                    ->toArray();
+                            })
+                            ->required()
+                            ->searchable(),
+
+                        Forms\Components\Textarea::make('descripcion')
+                            ->label('Descripción')
+                            ->rows(2),
+                    ])
+                    ->action(function (array $data, $record) {
+                        Evidencia::create([
+                            'indicador_id' => $data['indicador_id'],
+                            'alumno_id' => $record->id,
+                            'profesor_id' => Auth::user()->profesor->id ?? null,
+                            'fecha' => now()->toDateString(),
+                            'descripcion' => $data['descripcion'] ?? null,
+                            'grupo_id' => $this->groupId, // Aquí también usas el groupId
+                        ]);
+
+                        \Filament\Notifications\Notification::make()
+                            ->title('Evidencia guardada correctamente')
+                            ->success()
+                            ->send();
+                    }),
+
+                    Action::make('ekimenerako')
+                    ->label('Ekimenerako')
+                    ->icon('heroicon-o-light-bulb')
+                    ->form([
+                        Forms\Components\Select::make('indicador_id')
+                            ->label('Indicador')
+                            ->preload()
+                            ->placeholder('Selecciona un indicador')
+                            ->options(function () {
+                                $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'Ekimenerako')
+                                    ->orWhere('nombre', 'LIKE', '%ekimenerako%')
+                                    ->first();
+
+                                if (!$competencia) {
+                                    return [];
+                                }
+
+                                return $competencia->indicadors()
+                                    ->pluck('nombre', 'id')
+                                    ->toArray();
+                            })
+                            ->required()
+                            ->searchable(),
+                            
+                        Forms\Components\Textarea::make('descripcion')
+                            ->label('Descripción')
+                            ->rows(2),
+                    ])
+                    ->action(function (array $data, $record) {
+                        Evidencia::create([
+                            'indicador_id' => $data['indicador_id'],
+                            'alumno_id' => $record->id,
+                            'profesor_id' => Auth::user()->profesor->id ?? null,
+                            'fecha' => now()->toDateString(),
+                            'descripcion' => $data['descripcion'] ?? null,
+                            'grupo_id' => $this->groupId, // Aquí también usas el groupId
+                        ]);
+                        
+                        \Filament\Notifications\Notification::make()
+                            ->title('Evidencia guardada correctamente')
+                            ->success()
+                            ->send();
+                    }),
+
+                    
+                    Action::make('izateko')
+                    ->label('Izateko')
+                    ->icon('heroicon-o-light-bulb')
+                    ->form([
+                        Forms\Components\Select::make('indicador_id')
+                            ->label('Indicador')
+                            ->preload()
+                            ->placeholder('Selecciona un indicador')
+                            ->options(function () {
+                                $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'Izateko')
+                                    ->orWhere('nombre', 'LIKE', '%izateko%')
                                     ->first();
 
                                 if (!$competencia) {
