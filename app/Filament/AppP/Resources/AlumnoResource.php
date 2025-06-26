@@ -53,6 +53,7 @@ class AlumnoResource extends Resource
                 Tables\Actions\EditAction::make(),
 
                 // Generar acciones dinámicamente desde CompetenciaTransversal
+                //table ListAlumnosen definituta dagoenez hay ez da aplikatzen
                 ...\App\Models\CompetenciaTransversal::all()->map(function ($competencia) {
                     return Action::make(substr($competencia->nombre, 0, 10))
                         ->label(substr($competencia->nombre, 0, 10))
