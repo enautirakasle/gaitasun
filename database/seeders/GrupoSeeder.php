@@ -39,6 +39,47 @@ class GrupoSeeder extends Seeder
                 'nombre' => 'DBH2 A',
                 'curso_id' => 2, // Assuming the second course exists
             ],
+
+            [
+                'nombre' => 'DBH2 B',
+                'curso_id' => 1,
+            ],
+            [
+                'nombre' => 'DBH3 A',
+                'curso_id' => 1,
+            ],
+            [
+                'nombre' => 'DBH3 B',
+                'curso_id' => 1,
+            ],
+            [
+                'nombre' => 'DBH4 A',
+                'curso_id' => 1,
+            ],
+            [
+                'nombre' => 'DBH4 B',
+                'curso_id' => 1,
+            ],
+            [
+                'nombre' => 'DBH2 B',
+                'curso_id' => 2,
+            ],
+            [
+                'nombre' => 'DBH3 A',
+                'curso_id' => 2,
+            ],
+            [
+                'nombre' => 'DBH3 B',
+                'curso_id' => 2,
+            ],
+            [
+                'nombre' => 'DBH4 A',
+                'curso_id' => 2,
+            ],
+            [
+                'nombre' => 'DBH4 B',
+                'curso_id' => 2,
+            ],
         ]);
     }
 }

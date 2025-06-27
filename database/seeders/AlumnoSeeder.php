@@ -28,5 +28,20 @@ class AlumnoSeeder extends Seeder
 
         // Asignar el rol de alumno (usando spatie/laravel-permission por ejemplo)
         $user->assignRole('alumno');
+
+        for ($i = 2; $i <= 100; $i++) {
+            $user = User::create([
+                'name' => "Alumno $i",
+                'email' => "alumno$i@example.com",
+                'password' => Hash::make('password'),
+            ]);
+
+            Alumno::create([
+                'user_id' => $user->id,
+                // agrega otros campos necesarios aquí
+            ]);
+
+            $user->assignRole('alumno');
+        }
     }
 }

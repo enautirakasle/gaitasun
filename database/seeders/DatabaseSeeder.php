@@ -29,12 +29,15 @@ class DatabaseSeeder extends Seeder
             IndicadorSeeder::class,
             CursoSeeder::class,
             GrupoSeeder::class,
+            GrupoAlumnoSeeder::class,
+            GrupoProfesorSeeder::class,
+            EvidenciaSeeder::class,
             // PermissionsSeeder::class,
             // Add other seeders here as needed
         ]);
 
-        User::factory()->count(40)->alumno()->create();
-        User::factory()->count(5)->profesor()->create();
+        // User::factory()->count(40)->alumno()->create();
+        // User::factory()->count(5)->profesor()->create();
 
         // Alumno::factory(10)->create();
     }
