@@ -44,7 +44,7 @@ class ListAlumnos extends ListRecords
                 \Filament\Tables\Actions\EditAction::make(),
 
                 Action::make('komunikazio')
-                    ->label('Komunikazio')
+                    ->label('Komunikatzeko')
                     ->icon('heroicon-o-chat-bubble-left-right')
                     ->form([
                         Forms\Components\Radio::make('indicador_id')
@@ -60,7 +60,8 @@ class ListAlumnos extends ListRecords
                                     ->pluck('nombre', 'id')
                                     ->toArray();
                             })
-                            ->required(),
+                            ->required()
+                            ->inline(), // Puedes quitar esto si prefieres que se muestren verticalmente
 
                         Forms\Components\Textarea::make('descripcion')
                             ->label('Descripción')
@@ -86,10 +87,8 @@ class ListAlumnos extends ListRecords
                     ->label('Pentsatzeko')
                     ->icon('heroicon-o-light-bulb')
                     ->form([
-                        Forms\Components\Select::make('indicador_id')
+                        Forms\Components\Radio::make('indicador_id')
                             ->label('Indicador')
-                            ->preload()
-                            ->placeholder('Selecciona un indicador')
                             ->options(function () {
                                 $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'Pentsatzeko')
                                     ->orWhere('nombre', 'LIKE', '%pentsatzen%')
@@ -104,7 +103,9 @@ class ListAlumnos extends ListRecords
                                     ->toArray();
                             })
                             ->required()
-                            ->searchable(),
+                            ->inline(), // Puedes quitar esto si prefieres que se muestren verticalmente
+
+
 
                         Forms\Components\Textarea::make('descripcion')
                             ->label('Descripción')
@@ -132,12 +133,10 @@ class ListAlumnos extends ListRecords
 
                 Action::make('elkarbizitzarako')
                     ->label('Elkarbizitzarako')
-                    ->icon('heroicon-o-light-bulb')
+                    ->icon('heroicon-o-users')
                     ->form([
-                        Forms\Components\Select::make('indicador_id')
+                        Forms\Components\Radio::make('indicador_id')
                             ->label('Indicador')
-                            ->preload()
-                            ->placeholder('Selecciona un indicador')
                             ->options(function () {
                                 $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'Elkarbizitzarako')
                                     ->orWhere('nombre', 'LIKE', '%elkarbizitzarako%')
@@ -152,7 +151,8 @@ class ListAlumnos extends ListRecords
                                     ->toArray();
                             })
                             ->required()
-                            ->searchable(),
+                            ->inline(), // Opcional: para mostrar en línea
+
 
                         Forms\Components\Textarea::make('descripcion')
                             ->label('Descripción')
@@ -174,14 +174,12 @@ class ListAlumnos extends ListRecords
                             ->send();
                     }),
 
-                    Action::make('ekimenerako')
+                Action::make('ekimenerako')
                     ->label('Ekimenerako')
-                    ->icon('heroicon-o-light-bulb')
+                    ->icon('heroicon-o-rocket-launch')
                     ->form([
-                        Forms\Components\Select::make('indicador_id')
+                        Forms\Components\Radio::make('indicador_id')
                             ->label('Indicador')
-                            ->preload()
-                            ->placeholder('Selecciona un indicador')
                             ->options(function () {
                                 $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'Ekimenerako')
                                     ->orWhere('nombre', 'LIKE', '%ekimenerako%')
@@ -196,8 +194,9 @@ class ListAlumnos extends ListRecords
                                     ->toArray();
                             })
                             ->required()
-                            ->searchable(),
-                            
+                            ->inline(), // Opcional: puedes quitar esto si prefieres vertical
+
+
                         Forms\Components\Textarea::make('descripcion')
                             ->label('Descripción')
                             ->rows(2),
@@ -211,25 +210,24 @@ class ListAlumnos extends ListRecords
                             'descripcion' => $data['descripcion'] ?? null,
                             'grupo_id' => $this->groupId, // Aquí también usas el groupId
                         ]);
-                        
+
                         \Filament\Notifications\Notification::make()
                             ->title('Evidencia guardada correctamente')
                             ->success()
                             ->send();
                     }),
 
-                    
-                    Action::make('izateko')
+
+                Action::make('izateko')
                     ->label('Izateko')
-                    ->icon('heroicon-o-light-bulb')
+                    ->icon('heroicon-o-user')
                     ->form([
-                        Forms\Components\Select::make('indicador_id')
+
+                        Forms\Components\Radio::make('indicador_id')
                             ->label('Indicador')
-                            ->preload()
-                            ->placeholder('Selecciona un indicador')
                             ->options(function () {
                                 $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'Izateko')
-                                    ->orWhere('nombre', 'LIKE', '%izateko%')
+                                    ->orWhere('nombre', 'LIKE', '%izaten%')
                                     ->first();
 
                                 if (!$competencia) {
@@ -241,8 +239,8 @@ class ListAlumnos extends ListRecords
                                     ->toArray();
                             })
                             ->required()
-                            ->searchable(),
-                            
+                            ->inline(),
+
                         Forms\Components\Textarea::make('descripcion')
                             ->label('Descripción')
                             ->rows(2),
@@ -256,7 +254,7 @@ class ListAlumnos extends ListRecords
                             'descripcion' => $data['descripcion'] ?? null,
                             'grupo_id' => $this->groupId, // Aquí también usas el groupId
                         ]);
-                        
+
                         \Filament\Notifications\Notification::make()
                             ->title('Evidencia guardada correctamente')
                             ->success()
