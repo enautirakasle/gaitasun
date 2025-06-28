@@ -109,9 +109,11 @@ class EvidenciaResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('alumno.user.name')
                     ->sortable()
+                    ->searchable()
                     ->label('Alumno'),
                 Tables\Columns\TextColumn::make('profesor.user.name')
                     ->sortable()
+                    ->searchable()
                     ->label('Profesor'),
                 Tables\Columns\TextColumn::make('fecha')
                     ->date('d/m/Y')
@@ -120,6 +122,7 @@ class EvidenciaResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('grupo.nombre')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
