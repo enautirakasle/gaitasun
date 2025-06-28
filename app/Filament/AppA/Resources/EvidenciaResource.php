@@ -77,7 +77,19 @@ class EvidenciaResource extends Resource
                 //     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('grupo_id')
+                    ->label('Grupo / Curso')
+                    ->options(function () {
+                        return \App\Models\Grupo::with('curso')
+                            ->get()
+                            ->mapWithKeys(function ($grupo) {
+                                $cursoNombre = $grupo->curso ? $grupo->curso->nombre : '';
+                                return [
+                                    $grupo->id => $grupo->nombre . ' - ' . $cursoNombre,
+                                ];
+                            });
+                    })
+                    ->searchable(),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
@@ -113,6 +125,8 @@ class EvidenciaResource extends Resource
             return parent::getEloquentQuery();
 
         }
-        return parent::getEloquentQuery()->where('alumno_id', Auth::user()->alumno->id);
+        return parent::getEloquentQuery()
+            ->where('alumno_id', Auth::user()->alumno->id)
+            ->orderByDesc('fecha');
     }
 }
