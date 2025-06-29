@@ -11,6 +11,7 @@ use Filament\Forms;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Evidencia;
+use App\Models\Grupo;
 
 class ListAlumnos extends ListRecords
 {
@@ -261,5 +262,17 @@ class ListAlumnos extends ListRecords
                             ->send();
                     }),
             ]);
+    }
+
+     public function getTitle(): string
+    {
+        $grupo = Grupo::with('curso')->find($this->groupId);
+
+        if (!$grupo) {
+            return 'Grupo no encontrado';
+        }
+
+        $cursoNombre = $grupo->curso->nombre ?? '';
+        return 'Alumnos de ' . $grupo->nombre . ' (' . $cursoNombre . ')';
     }
 }
