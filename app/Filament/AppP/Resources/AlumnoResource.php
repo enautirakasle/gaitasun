@@ -43,6 +43,9 @@ class AlumnoResource extends Resource
                     ->label('Nombre')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('evidencias_count')
+                    ->label('Número de Evidencias')
+                    ->counts('evidencias'),
             ])
             ->filters([
                 //
@@ -103,12 +106,12 @@ class AlumnoResource extends Resource
                 //             ->required()
                 //             ->searchable(), // Para que sea buscable si hay muchos indicadores
 
-                        // más campos...
-                    // ])
-                    // ->action(function (array $data, $record) {
-                        // Procesar los datos del formulario
-                        // $record->pentsatzekos()->create($data);
-                    // }),
+                // más campos...
+                // ])
+                // ->action(function (array $data, $record) {
+                // Procesar los datos del formulario
+                // $record->pentsatzekos()->create($data);
+                // }),
                 //beste azpipage bat zabaltzeko aukera
                 // Action::make('pentsatzeko')
                 //     ->label('Pentsatzeko')

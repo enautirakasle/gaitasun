@@ -33,9 +33,17 @@ class ListAlumnos extends ListRecords
             ->modifyQueryUsing(
                 function (Builder $query) {
                     $groupId = $this->groupId;
-                    return $query->whereHas('grupos', function (Builder $q) use ($groupId) {
+
+                    // Join with evidencias and count incidencias por alumno
+                    $query->whereHas('grupos', function (Builder $q) use ($groupId) {
                         $q->where('grupos.id', $groupId);
-                    });
+                    })
+                    ->withCount(['evidencias as incidencias_count' => function ($q) {
+                        // Puedes filtrar por tipo de incidencia si lo necesitas
+                    }])
+                    ->orderBy('incidencias_count');
+
+                    return $query;
                 }
             )
             ->columns(AlumnoResource::table(new Table($this))->getColumns())
