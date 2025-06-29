@@ -11,10 +11,12 @@ class TablaEvidenciasCount extends Component
 
     public function render()
     {
-        $conteo = Evidencia::where('alumno_id', $this->alumnoId)->count();
+        // $conteo = Evidencia::where('alumno_id', $this->alumnoId)->count();
+        $evidencias = Evidencia::where('alumno_id', $this->alumnoId)->get()->sortByDesc('fecha');
 
         return view('livewire.tabla-evidencias-count', [
-            'conteo' => $conteo,
+            // 'conteo' => $conteo,
+            'evidencias' => $evidencias,
         ]);
     }
 }
