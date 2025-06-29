@@ -24,7 +24,7 @@ class AlumnoResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return false;
+        return true;
     }
 
     public static function form(Form $form): Form
@@ -57,29 +57,31 @@ class AlumnoResource extends Resource
 
                 // Generar acciones dinámicamente desde CompetenciaTransversal
                 //table ListAlumnosen definituta dagoenez hay ez da aplikatzen
-                ...\App\Models\CompetenciaTransversal::all()->map(function ($competencia) {
-                    return Action::make(substr($competencia->nombre, 0, 10))
-                        ->label(substr($competencia->nombre, 0, 10))
-                        ->form([
-                            Forms\Components\Select::make('indicador_id')
-                                ->label('Indicador')
-                                ->placeholder('Selecciona un indicador')
-                                ->options($competencia->indicadors()
-                                    ->pluck('nombre', 'id') // o el campo que uses para el nombre
-                                    ->toArray())
-                                ->required()
-                                ->searchable(), // Para que sea buscable si hay muchos indicadores
-                            Forms\Components\Textarea::make('descripcion')
-                                ->label('Descripción')
-                                ->rows(4),
-                            // más campos...
-                        ])
-                        // ->action(fn($record) => dd('hola'));
-                        ->action(function (array $data, $record) {
-                            // Procesar los datos del formulario
-                            // $record->pentsatzekos()->create($data);
-                        });
-                })->all(),
+                // ...\App\Models\CompetenciaTransversal::all()->map(function ($competencia) {
+                //     return Action::make(substr($competencia->nombre, 0, 10))
+                //         ->label(substr($competencia->nombre, 0, 10))
+                //         ->form([
+                //             Forms\Components\Select::make('indicador_id')
+                //                 ->label('Indicador')
+                //                 ->placeholder('Selecciona un indicador')
+                //                 ->options($competencia->indicadors()
+                //                     ->pluck('nombre', 'id') // o el campo que uses para el nombre
+                //                     ->toArray())
+                //                 ->required()
+                //                 ->searchable(), // Para que sea buscable si hay muchos indicadores
+                //             Forms\Components\Textarea::make('descripcion')
+                //                 ->label('Descripción')
+                //                 ->rows(4),
+                //             // más campos...
+                //         ])
+                //         // ->action(fn($record) => dd('hola'));
+                //         ->action(function (array $data, $record) {
+                //             // Procesar los datos del formulario
+                //             // $record->pentsatzekos()->create($data);
+                //         });
+                // })->all(),
+
+
                 // Aquí puedes agregar acciones específicas para cada competencia transversal
                 //   Action::make('pentsatzeko')
                 //     ->label('Pentsatzeko')
@@ -141,10 +143,11 @@ class AlumnoResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAlumnos::route('/grupo/{record?}'),
+            'index' => Pages\ListAlumnos::route('/'),
             'create' => Pages\CreateAlumno::route('/create'),
             'edit' => Pages\EditAlumno::route('/{record}/edit'),
             'view' => Pages\ViewAlumno::route('/{record}'),
+            'grupo' => Pages\ListGrupoAlumnos::route('/grupo/{record?}'),
         ];
     }
 

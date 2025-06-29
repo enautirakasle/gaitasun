@@ -38,7 +38,7 @@ class GruposRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('nombre')
                 ->label('Grupo')
                     ->sortable()
-                    ->url(fn($record) => AlumnoResource::getUrl('index', ['record' => $record->id]))
+                    ->url(fn($record) => AlumnoResource::getUrl('grupo', ['record' => $record->id]))
             ])
             ->filters([
                 //
@@ -48,7 +48,7 @@ class GruposRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\Action::make('alumnos')
                     ->label(fn($record) => 'Ikasleak (' . $record->alumnos()->count() . ')')
-                    ->url(fn($record) => AlumnoResource::getUrl('index', ['record' => $record->id]))
+                    ->url(fn($record) => AlumnoResource::getUrl('grupo', ['record' => $record->id]))
                     ->color('primary'),
             ])
             ->bulkActions([
