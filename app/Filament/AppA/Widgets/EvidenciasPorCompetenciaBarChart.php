@@ -5,23 +5,15 @@ namespace App\Filament\AppA\Widgets;
 use Filament\Widgets\ChartWidget;
 use App\Models\Evidencia;
 use Illuminate\Support\Facades\DB;
-use App\Models\Indicador;
 use App\Models\CompetenciaTransversal;
 use Illuminate\Support\Facades\Auth;
 
-class KomunikatzekoKChart extends ChartWidget
+class EvidenciasPorCompetenciaBarChart extends ChartWidget
 {
-    protected static ?string $heading = 'Evidencias por competencia (polar)';
+    protected static ?string $heading = 'Evidencias por competencia (barras)';
 
     protected function getData(): array
     {
-
-        // $data = Evidencia::where('alumno_id', Auth::user()->alumno->id)
-        //     ->get()
-        //     ->groupBy('indicador_id')
-        //     ->map(function ($evidencias) {
-        //         return $evidencias->count();
-        //     });
         $data = DB::table('evidencias')
             ->join('indicadors', 'evidencias.indicador_id', '=', 'indicadors.id')
             ->join('competencia_transversals', 'indicadors.competencia_transversal_id', '=', 'competencia_transversals.id')
@@ -33,14 +25,14 @@ class KomunikatzekoKChart extends ChartWidget
             ->groupBy('competencia_transversals.id')
             ->pluck('total_evidencias', 'competencia_id');
 
-        // dd($data);  
-        $labels = CompetenciaTransversal::all();
+        $labels = CompetenciaTransversal::all()->pluck('nombre')->map(function ($nombre) {
+            return mb_substr($nombre, 0, 8) . '...';
+        })->all();
 
-        // dd($data);
         return [
             'datasets' => [
                 [
-                    'label' => 'Komunikatzeko K',
+                    'label' => 'Evidencias',
                     'data' => $data->values()->all(),
                     'backgroundColor' => [
                         'rgba(54, 162, 235, 0.6)',
@@ -61,18 +53,17 @@ class KomunikatzekoKChart extends ChartWidget
                     'borderWidth' => 1,
                 ],
             ],
-            'labels' => $labels->pluck('nombre')->all(),
+            'labels' => $labels,
         ];
     }
 
     protected function getType(): string
     {
-        return 'polarArea';
+        return 'bar';
     }
 
     public static function canView(): bool
     {
-        /** @var \app\Models\User $user */
         $user = Auth::user();
         return $user->hasRole('alumno');
     }
