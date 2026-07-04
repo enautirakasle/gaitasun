@@ -6,6 +6,7 @@ use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
 use App\Models\CompetenciaTransversal;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class EvolucionCompetenciaLineChart extends ChartWidget
 {
@@ -19,7 +20,7 @@ class EvolucionCompetenciaLineChart extends ChartWidget
             return [
                 'datasets' => [
                     [
-                        'label' => 'Evidencias',
+                        'label' => 'Puntuación acumulada',
                         'data' => [],
                         'borderColor' => 'rgba(54, 162, 235, 1)',
                         'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
@@ -31,13 +32,25 @@ class EvolucionCompetenciaLineChart extends ChartWidget
             ];
         }
 
-        $rows = DB::table('evidencias')
+        $query = DB::table('evidencias')
             ->join('indicadors', 'evidencias.indicador_id', '=', 'indicadors.id')
             ->where('indicadors.competencia_transversal_id', $competencia->id)
             ->where('evidencias.alumno_id', Auth::user()->alumno->id)
-            ->select(DB::raw('DATE(evidencias.fecha) as fecha'), DB::raw('CAST(indicadors.valor AS INTEGER) as valor'))
-            ->orderBy('fecha')
-            ->get();
+            ->select(DB::raw('DATE(evidencias.fecha) as fecha'), DB::raw('CAST(indicadors.valor AS INTEGER) as valor'));
+
+        if ($this->filter) {
+            $days = match ($this->filter) {
+                '7' => 7,
+                '30' => 30,
+                '90' => 90,
+                default => null,
+            };
+            if ($days) {
+                $query->where('evidencias.fecha', '>=', Carbon::today()->subDays($days));
+            }
+        }
+
+        $rows = $query->orderBy('fecha')->get();
 
         $cumulative = 0;
         $dates = [];
@@ -60,6 +73,16 @@ class EvolucionCompetenciaLineChart extends ChartWidget
                 ],
             ],
             'labels' => $dates,
+        ];
+    }
+
+    protected function getFilters(): ?array
+    {
+        return [
+            'all' => 'Todo',
+            '7' => 'Últimos 7 días',
+            '30' => 'Últimos 30 días',
+            '90' => 'Últimos 90 días',
         ];
     }
 
