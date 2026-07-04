@@ -55,6 +55,14 @@ class ListGrupoAlumnos extends ListRecords
                 Action::make('komunikazio')
                     ->label('Komunikatzeko')
                     ->icon('heroicon-o-chat-bubble-left-right')
+                    ->badge(function ($record) {
+                        $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'like', '%komunikatzeko%')->first();
+                        if (!$competencia) return 0;
+                        return \App\Models\Evidencia::where('alumno_id', $record->id)
+                            ->whereIn('indicador_id', $competencia->indicadors()->pluck('id'))
+                            ->where('grupo_id', $this->groupId)
+                            ->count();
+                    })
                     ->form([
                         Forms\Components\Radio::make('indicador_id')
                             ->label('Indicador')
@@ -95,6 +103,14 @@ class ListGrupoAlumnos extends ListRecords
                 Action::make('pentsatzeko')
                     ->label('Pentsatzeko')
                     ->icon('heroicon-o-light-bulb')
+                    ->badge(function ($record) {
+                        $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'like', '%pentsatzen%')->first();
+                        if (!$competencia) return 0;
+                        return \App\Models\Evidencia::where('alumno_id', $record->id)
+                            ->whereIn('indicador_id', $competencia->indicadors()->pluck('id'))
+                            ->where('grupo_id', $this->groupId)
+                            ->count();
+                    })
                     ->form([
                         Forms\Components\Radio::make('indicador_id')
                             ->label('Indicador')
@@ -143,6 +159,14 @@ class ListGrupoAlumnos extends ListRecords
                 Action::make('elkarbizitzarako')
                     ->label('Elkarbizitzarako')
                     ->icon('heroicon-o-users')
+                    ->badge(function ($record) {
+                        $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'like', '%elkarbizitzarako%')->first();
+                        if (!$competencia) return 0;
+                        return \App\Models\Evidencia::where('alumno_id', $record->id)
+                            ->whereIn('indicador_id', $competencia->indicadors()->pluck('id'))
+                            ->where('grupo_id', $this->groupId)
+                            ->count();
+                    })
                     ->form([
                         Forms\Components\Radio::make('indicador_id')
                             ->label('Indicador')
@@ -186,6 +210,14 @@ class ListGrupoAlumnos extends ListRecords
                 Action::make('ekimenerako')
                     ->label('Ekimenerako')
                     ->icon('heroicon-o-rocket-launch')
+                    ->badge(function ($record) {
+                        $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'like', '%ekimenerako%')->first();
+                        if (!$competencia) return 0;
+                        return \App\Models\Evidencia::where('alumno_id', $record->id)
+                            ->whereIn('indicador_id', $competencia->indicadors()->pluck('id'))
+                            ->where('grupo_id', $this->groupId)
+                            ->count();
+                    })
                     ->form([
                         Forms\Components\Radio::make('indicador_id')
                             ->label('Indicador')
@@ -230,6 +262,14 @@ class ListGrupoAlumnos extends ListRecords
                 Action::make('izateko')
                     ->label('Izateko')
                     ->icon('heroicon-o-user')
+                    ->badge(function ($record) {
+                        $competencia = \App\Models\CompetenciaTransversal::where('nombre', 'like', '%izaten%')->first();
+                        if (!$competencia) return 0;
+                        return \App\Models\Evidencia::where('alumno_id', $record->id)
+                            ->whereIn('indicador_id', $competencia->indicadors()->pluck('id'))
+                            ->where('grupo_id', $this->groupId)
+                            ->count();
+                    })
                     ->form([
 
                         Forms\Components\Radio::make('indicador_id')
