@@ -25,9 +25,10 @@ class EvidenciasPorCompetenciaBarChart extends ChartWidget
             )
             ->where('evidencias.alumno_id', $this->alumno_id ?? Auth::user()->alumno->id)
             ->groupBy('competencia_transversals.id')
+            ->orderBy('competencia_transversals.id')
             ->pluck('total_evidencias', 'competencia_id');
 
-        $labels = CompetenciaTransversal::all()->pluck('nombre')->map(function ($nombre) {
+        $labels = CompetenciaTransversal::orderBy('id')->get()->pluck('nombre')->map(function ($nombre) {
             return mb_substr($nombre, 0, 8) . '...';
         })->all();
 
@@ -37,20 +38,18 @@ class EvidenciasPorCompetenciaBarChart extends ChartWidget
                     'label' => 'Evidencias',
                     'data' => $data->values()->all(),
                     'backgroundColor' => [
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 99, 132, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(75, 192, 192, 0.6)',
-                        'rgba(153, 102, 255, 0.6)',
-                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',  // Hitzez
+                        'rgba(75, 192, 192, 0.6)',  // Ikasten
+                        'rgba(255, 159, 64, 0.6)',  // Elkarbizitza
+                        'rgba(153, 102, 255, 0.6)', // Ekimena
+                        'rgba(255, 99, 132, 0.6)',  // Izaten
                     ],
                     'borderColor' => [
                         'rgba(54, 162, 235, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(255, 206, 86, 1)',
                         'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
                         'rgba(255, 159, 64, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 99, 132, 1)',
                     ],
                     'borderWidth' => 1,
                 ],
