@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class EvidenciasPorCompetenciaBarChart extends ChartWidget
 {
+    public $alumno_id = null;
+
     protected static ?string $heading = 'Evidencias por competencia (barras)';
 
     protected function getData(): array
@@ -21,7 +23,7 @@ class EvidenciasPorCompetenciaBarChart extends ChartWidget
                 'competencia_transversals.id as competencia_id',
                 DB::raw('COUNT(evidencias.id) as total_evidencias')
             )
-            ->where('evidencias.alumno_id', Auth::user()->alumno->id)
+            ->where('evidencias.alumno_id', $this->alumno_id ?? Auth::user()->alumno->id)
             ->groupBy('competencia_transversals.id')
             ->pluck('total_evidencias', 'competencia_id');
 
@@ -65,6 +67,6 @@ class EvidenciasPorCompetenciaBarChart extends ChartWidget
     public static function canView(): bool
     {
         $user = Auth::user();
-        return $user->hasRole('alumno');
+        return $user->hasRole(['alumno', 'profesor', 'admin']);
     }
 }

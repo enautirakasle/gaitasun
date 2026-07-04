@@ -10,6 +10,8 @@ use Carbon\Carbon;
 
 class EvolucionElkarbizitzaLineChart extends ChartWidget
 {
+    public $alumno_id = null;
+
     protected static ?string $heading = 'Evolución de evidencias - Elkarbizitza...';
 
     protected function getData(): array
@@ -35,7 +37,7 @@ class EvolucionElkarbizitzaLineChart extends ChartWidget
         $query = DB::table('evidencias')
             ->join('indicadors', 'evidencias.indicador_id', '=', 'indicadors.id')
             ->where('indicadors.competencia_transversal_id', $competencia->id)
-            ->where('evidencias.alumno_id', Auth::user()->alumno->id)
+            ->where('evidencias.alumno_id', $this->alumno_id ?? Auth::user()->alumno->id)
             ->select(DB::raw('DATE(evidencias.fecha) as fecha'), DB::raw('CAST(indicadors.valor AS INTEGER) as valor'));
 
         if ($this->filter) {
@@ -94,6 +96,6 @@ class EvolucionElkarbizitzaLineChart extends ChartWidget
     public static function canView(): bool
     {
         $user = Auth::user();
-        return $user->hasRole('alumno');
+        return $user->hasRole(['alumno', 'profesor', 'admin']);
     }
 }
