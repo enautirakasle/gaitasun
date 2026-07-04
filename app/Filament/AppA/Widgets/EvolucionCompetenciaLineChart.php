@@ -70,7 +70,7 @@ class EvolucionCompetenciaLineChart extends ChartWidget
                     'data' => $values,
                     'borderColor' => 'rgba(54, 162, 235, 1)',
                     'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
-                    'fill' => true,
+                    'fill' => false,
                     'tension' => 0.3,
                 ],
             ],

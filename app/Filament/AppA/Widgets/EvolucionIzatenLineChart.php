@@ -70,7 +70,7 @@ class EvolucionIzatenLineChart extends ChartWidget
                     'data' => $values,
                     'borderColor' => 'rgba(255, 99, 132, 1)',
                     'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
-                    'fill' => true,
+                    'fill' => false,
                     'tension' => 0.3,
                 ],
             ],
