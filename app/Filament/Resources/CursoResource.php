@@ -25,6 +25,8 @@ class CursoResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nombre')
                     ->required()
+                    ->placeholder('Ej: 2024-2025')
+                    ->regex('/^\d{4}-\d{4}$/')
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('fecha_inicio')
                     ->required(),

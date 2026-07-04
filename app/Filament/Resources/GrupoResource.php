@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\GrupoResource\Pages;
 use App\Filament\Resources\GrupoResource\RelationManagers;
+use App\Models\Curso;
 use App\Models\Grupo;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -27,9 +28,11 @@ class GrupoResource extends Resource
                 Forms\Components\TextInput::make('nombre')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('curso_id')
+                Forms\Components\Select::make('curso_id')
+                    ->label('Curso')
+                    ->options(Curso::pluck('nombre', 'id'))
                     ->required()
-                    ->numeric(),
+                    ->searchable(),
                 Forms\Components\TextInput::make('turno'),
                 Forms\Components\TextInput::make('aula')
                     ->maxLength(255),
